@@ -14,8 +14,8 @@ int sMenu = 0;
 int sStart = 0;
 
 // relay triggers
-const int rEn = 0;
-const int rSL = 1;
+const int rEn = 0; // enlarger
+const int rSL = 1; // safe light
 
 // display
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
@@ -38,7 +38,7 @@ void setup() {
   pinMode(bStart, INPUT);
   pinMode(rEn, OUTPUT);
   pinMode(rSL, OUTPUT);
-  
+
   // set pins to allow no power
   // not sure if this is necessary
   digitalWrite(rEn, LOW);
@@ -46,7 +46,7 @@ void setup() {
 
   // start lcd
   lcd.begin(16, 2);
-  
+
   // print open message and wait
   lcd.print("Ben's Photo");
   lcd.setCursor(0, 1);
@@ -82,21 +82,16 @@ void doSwitch(int bPressed) {
       modeMenu(bPressed);
       break;
     case 1:
-      modeEnlarger(bPressed);
+      modeExpose(bPressed);
       break;
     case 2:
-      modePrintTimer(bPressed);
+      modePrint(bPressed);
       break;
     case 3:
-      modeFilmTimer(bPressed);
+      modeDevelop(bPressed);
       break;
     default:
       lcd.clear();
-      lcd.print("Something Happened.");
+      lcd.print("You broke it.");
   }
 }
-
-void modeMenu(int bPressed) {}
-void modeEnlarger(int bPressed) {}
-void modePrintTimer(int bPressed) {}
-void modeFilmTimer(int bPressed) {}
