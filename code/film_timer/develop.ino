@@ -1,1 +1,3 @@
-void modeDevelop(int bPressed) {}
+void modeDevelop(int bPressed) {
+  lcd.print("yay");
+}

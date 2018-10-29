@@ -14,8 +14,8 @@ int sMenu = 0;
 int sStart = 0;
 
 // relay triggers
-const int rEn = 0; // enlarger
-const int rSL = 1; // safe light
+const int rEn = 4; // enlarger
+const int rSL = 5; // safe light
 
 // display
 LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
@@ -33,17 +33,17 @@ boolean start = true;
 
 void setup() {
   // setup pins
-  pinMode(bUp, INPUT_PULLUP);
-  //pinMode(bDown, INPUT);
-  //pinMode(bMenu, INPUT);
-  //pinMode(bStart, INPUT);
-  //pinMode(rEn, OUTPUT);
-  //pinMode(rSL, OUTPUT);
+  pinMode(bUp, INPUT);
+  pinMode(bDown, INPUT);
+  pinMode(bMenu, INPUT);
+  pinMode(bStart, INPUT);
+  pinMode(rEn, OUTPUT);
+  pinMode(rSL, OUTPUT);
 
   // set pins to allow no power
   // not sure if this is necessary
-  //digitalWrite(rEn, LOW);
-  //digitalWrite(rEn, LOW);
+  digitalWrite(rEn, LOW);
+  digitalWrite(rEn, LOW);
   
   // start lcd
   lcd.begin(16, 2);
@@ -52,8 +52,8 @@ void setup() {
   lcd.print("Ben's Photo");
   lcd.setCursor(0, 1);
   lcd.print("Timer Thing v1");
-  delay(2000);
-  lcd.clear();
+  delay(1500);
+  tWipeOut();
 }
 
 void loop() {
@@ -62,30 +62,29 @@ void loop() {
   if (start) {
     start = false;
     modeMenu(-1);
+    return;
   }
-  
-  // get states
-  sUp = !digitalRead(bUp);
-  /*
-  sDown = digitalRead(bDown);
-  sMenu = digitalRead(bMenu);
-  sStart = digitalRead(bStart);
-  */
-  sDown = LOW;
-  sMenu = LOW;
-  sStart = LOW;
 
-  if (sUp == HIGH) {
+
+  if (pressed(bUp)) {
     doSwitch(sUp);
+    delay(400);
   }
-  else if (sDown == HIGH) {
+  else if (pressed(bDown)) {
     doSwitch(sDown);
+    delay(400);
   }
-  else if (sMenu == HIGH) {
+  /*
+  else if (pressed(bMenu)) {
     doSwitch(sMenu);
+    delay(50);
   }
-  else if (sStart == HIGH) {
+  */
+  if (!pressed(bStart)) {
+    //lcd.setCursor(0,0);
+    //lcd.print(state++);
     doSwitch(sStart);
+    delay(400);
   }
 }
 
@@ -94,17 +93,17 @@ void doSwitch(int bPressed) {
     case 0:
       modeMenu(bPressed);
       break;
-    /*
     case 1:
       modeExpose(bPressed);
       break;
+    /*
     case 2:
       modePrint(bPressed);
       break;
+    */
     case 3:
       modeDevelop(bPressed);
       break;
-    */
     default:
       lcd.clear();
       lcd.print("You broke it.");

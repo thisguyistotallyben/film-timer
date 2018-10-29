@@ -4,6 +4,8 @@ int menuCurr = 0;
 String options[] = {"Expose", "Print", "Develop"};
 
 
+
+
 void modeMenu(int bPressed) {
   // -1 means just entered menu
   if (bPressed == -1) {
@@ -25,21 +27,10 @@ void modeMenu(int bPressed) {
   lcd.setCursor(0, 1);
   lcd.print("> " + options[menuCurr]);
   
-  /*
-  menuCurr++;
-  clearLine(1);
-  
-  delay(1000);
-  lcd.setCursor(6, 0);
-  lcd.print(menuCurr + 1);
-  lcd.setCursor(0, 1);
-  lcd.print(options[menuCurr]);
-  
-  
-  
   // select
   if (bPressed == bStart) {
     state = menuCurr + 1;
+    arrowTransition();
+    doSwitch(-1);
   }
-  */
 }
