@@ -2,10 +2,10 @@
 
 
 // buttons
-const int bUp = 7;
-const int bDown = 8;
-const int bMenu = 9;
-const int bStart = 10;
+const int bUp = 0;
+const int bDown = 1;
+const int bMenu = 2;
+const int bStart = 3;
 
 // button states
 int sUp = 0;
@@ -18,7 +18,7 @@ const int rEn = 0; // enlarger
 const int rSL = 1; // safe light
 
 // display
-LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
+LiquidCrystal lcd(7, 8, 9, 10, 11, 12);
 
 // overall state
 /*
@@ -28,22 +28,23 @@ LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
   3 - film develop timer
 */
 int state = 0;
+boolean start = true;
 
 
 void setup() {
   // setup pins
-  pinMode(bUp, INPUT);
-  pinMode(bDown, INPUT);
-  pinMode(bMenu, INPUT);
-  pinMode(bStart, INPUT);
-  pinMode(rEn, OUTPUT);
-  pinMode(rSL, OUTPUT);
+  pinMode(bUp, INPUT_PULLUP);
+  //pinMode(bDown, INPUT);
+  //pinMode(bMenu, INPUT);
+  //pinMode(bStart, INPUT);
+  //pinMode(rEn, OUTPUT);
+  //pinMode(rSL, OUTPUT);
 
   // set pins to allow no power
   // not sure if this is necessary
-  digitalWrite(rEn, LOW);
-  digitalWrite(rEn, LOW);
-
+  //digitalWrite(rEn, LOW);
+  //digitalWrite(rEn, LOW);
+  
   // start lcd
   lcd.begin(16, 2);
 
@@ -51,16 +52,28 @@ void setup() {
   lcd.print("Ben's Photo");
   lcd.setCursor(0, 1);
   lcd.print("Timer Thing v1");
-  delay(1000);
+  delay(2000);
   lcd.clear();
 }
 
 void loop() {
+  // start in menu
+  // execute once only
+  if (start) {
+    start = false;
+    modeMenu(-1);
+  }
+  
   // get states
-  sUp = digitalRead(bUp);
+  sUp = !digitalRead(bUp);
+  /*
   sDown = digitalRead(bDown);
   sMenu = digitalRead(bMenu);
   sStart = digitalRead(bStart);
+  */
+  sDown = LOW;
+  sMenu = LOW;
+  sStart = LOW;
 
   if (sUp == HIGH) {
     doSwitch(sUp);
@@ -81,6 +94,7 @@ void doSwitch(int bPressed) {
     case 0:
       modeMenu(bPressed);
       break;
+    /*
     case 1:
       modeExpose(bPressed);
       break;
@@ -90,6 +104,7 @@ void doSwitch(int bPressed) {
     case 3:
       modeDevelop(bPressed);
       break;
+    */
     default:
       lcd.clear();
       lcd.print("You broke it.");
